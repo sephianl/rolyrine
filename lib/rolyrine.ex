@@ -80,11 +80,13 @@ defmodule Rolyrine do
     precision = Keyword.get(opts, :precision, @default_precision)
     format = Keyword.get(opts, :format, :tuple)
 
-    polyline
-    |> decode_nif(precision)
-    |> to_format(format)
+    case decode_nif(polyline, precision) do
+      {:error, _} = error -> error
+      coords -> to_format(coords, format)
+    end
   end
 
+  defp to_format({:error, _} = error, _format), do: error
   defp to_format(coords, :tuple), do: coords
 
   defp to_format(coords, :longitude_latitude) do
