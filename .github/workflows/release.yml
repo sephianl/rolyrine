@@ -2,11 +2,14 @@ name: Build precompiled NIFs
 
 on:
   push:
-    branches: [main]
     tags:
       - "v*"
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish release to (e.g., v0.1.0). Leave empty for artifacts only."
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -61,5 +64,6 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
           files: ${{ steps.build-crate.outputs.file-path }}
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
