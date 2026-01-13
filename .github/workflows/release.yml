@@ -61,9 +61,60 @@ jobs:
           name: ${{ steps.build-crate.outputs.file-name }}
           path: ${{ steps.build-crate.outputs.file-path }}
 
-      - name: Publish release
+  publish_release:
+    name: Publish release
+    needs: build_release
+    runs-on: ubuntu-22.04
+    if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_files
+          merge-multiple: true
+
+      - name: Generate checksums
+        run: |
+          echo "Files in release_files:"
+          ls -la release_files/
+
+          # Generate checksum file
+          echo "%{" > checksum-Elixir.Rolyrine.exs
+
+          cd release_files
+          for file in *.tar.gz; do
+            if [ -f "$file" ]; then
+              sha=$(sha256sum "$file" | cut -d' ' -f1)
+              echo "  \"$file\" => \"sha256:$sha\"," >> ../checksum-Elixir.Rolyrine.exs
+            fi
+          done
+          cd ..
+
+          echo "}" >> checksum-Elixir.Rolyrine.exs
+
+          echo "Generated checksum file:"
+          cat checksum-Elixir.Rolyrine.exs
+
+          cp checksum-Elixir.Rolyrine.exs release_files/
+
+      - name: Commit checksum file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add checksum-Elixir.Rolyrine.exs
+          git commit -m "Update checksums for ${{ inputs.tag || github.ref_name }}" || echo "No changes to commit"
+          git push origin main
+
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ inputs.tag || github.ref_name }}
-          files: ${{ steps.build-crate.outputs.file-path }}
-        if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
+          files: release_files/*
+          fail_on_unmatched_files: true
