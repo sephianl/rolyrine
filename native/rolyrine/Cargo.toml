@@ -1,0 +1,19 @@
+[package]
+name = "rolyrine"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "rolyrine"
+crate-type = ["cdylib"]
+
+[features]
+default = ["nif_version_2_15"]
+nif_version_2_15 = ["rustler/nif_version_2_15"]
+nif_version_2_16 = ["rustler/nif_version_2_16"]
+nif_version_2_17 = ["rustler/nif_version_2_17"]
+
+[dependencies]
+rustler = { version = "0.36", default-features = false, features = ["derive"] }
+polyline = "0.11"
+geo-types = "0.7"
