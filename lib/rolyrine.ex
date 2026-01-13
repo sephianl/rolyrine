@@ -57,6 +57,7 @@ defmodule Rolyrine do
     * `:precision` - decimal precision (default: 5)
     * `:format` - output format (default: `:tuple`)
       - `:tuple` - `[{lon, lat}, ...]`
+      - `:tuple_reversed` - `[{lat, lon}, ...]`
       - `:longitude_latitude` - `[%{longitude: lon, latitude: lat}, ...]`
       - `:lon_lat` - `[%{lon: lon, lat: lat}, ...]`
       - `:lng_lat` - `[%{lng: lon, lat: lat}, ...]`
@@ -88,6 +89,10 @@ defmodule Rolyrine do
 
   defp to_format({:error, _} = error, _format), do: error
   defp to_format(coords, :tuple), do: coords
+
+  defp to_format(coords, :tuple_reversed) do
+    Enum.map(coords, fn {lon, lat} -> {lat, lon} end)
+  end
 
   defp to_format(coords, :longitude_latitude) do
     Enum.map(coords, fn {lon, lat} -> %{longitude: lon, latitude: lat} end)
