@@ -24,7 +24,7 @@ defmodule Rolyrine.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.36.0", runtime: false},
+      {:rustler, "~> 0.37.0", runtime: false},
       {:rustler_precompiled, "~> 0.8"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false}
     ]
