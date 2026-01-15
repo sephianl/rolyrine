@@ -110,7 +110,7 @@ checksum = "8d942b98df5e658f56f20d592c7f868833fe38115e65c33003d8cd224b0155da"
 
 [[package]]
 name = "rolyrine"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "geo-types",
  "polyline",
