@@ -1,7 +1,7 @@
 defmodule Rolyrine.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.2"
   @source_url "https://github.com/sephianl/rolyrine"
 
   def project do
@@ -32,7 +32,7 @@ defmodule Rolyrine.MixProject do
 
   defp package do
     [
-      files: ["lib", "native", "checksum-*.exs", "mix.exs", "README.md", "LICENSE"],
+      files: ["lib", "native/rolyrine/src", "native/rolyrine/Cargo.*", "checksum-*.exs", "mix.exs", "README.md", "LICENSE"],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
     ]
