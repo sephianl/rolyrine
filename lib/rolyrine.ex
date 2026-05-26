@@ -26,7 +26,7 @@ defmodule Rolyrine do
       [%{longitude: -120.2, latitude: 38.5}, %{longitude: -120.95, latitude: 40.7}]
   """
 
-  @version "0.1.1"
+  @version "0.1.3"
 
   use RustlerPrecompiled,
     otp_app: :rolyrine,

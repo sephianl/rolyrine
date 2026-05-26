@@ -1,7 +1,7 @@
 defmodule Rolyrine.MixProject do
   use Mix.Project
 
-  @version "0.1.2"
+  @version "0.1.3"
   @source_url "https://github.com/sephianl/rolyrine"
 
   def project do
@@ -24,7 +24,7 @@ defmodule Rolyrine.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.37.0", runtime: false},
+      {:rustler, "~> 0.37", runtime: false},
       {:rustler_precompiled, "~> 0.8"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false}
     ]
